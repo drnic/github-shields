@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strconv"
 
 	"code.google.com/p/goauth2/oauth"
 
@@ -28,22 +29,40 @@ func prRedirectHandler(render render.Render, r *http.Request, params martini.Par
 func prBadgeHandler(render render.Render, r *http.Request, params martini.Params) {
 	organization := params["org"]
 	repo := params["repo"]
-	pullRequestID := params["pull_id"]
 	badgeType := params["badge_type"]
-	log.Printf("getting github PR %s %s #%s %s", organization, repo, pullRequestID, badgeType)
 	if (badgeType != "png") && (badgeType != "json") {
 		badgeType = "svg"
 	}
 
-	status := "open"
-	color := "green"
+	status := "unknown"
+	color := "lightgrey"
+
+	pullRequestID, err := strconv.ParseInt(params["pull_id"], 10, 0)
+	if err == nil {
+		log.Printf("getting github PR %s %s #%d %s", organization, repo, pullRequestID, badgeType)
+		pr, _, err := client.PullRequests.Get(organization, repo, int(pullRequestID))
+		if err == nil {
+			fmt.Printf("PR %s %s: merged? %t state: %s\n", organization, repo, *pr.Merged, *pr.State)
+			if *pr.Merged {
+				status = "merged"
+				color = "blue"
+			} else if *pr.State == "open" {
+				status = "open"
+				color = "green"
+			} else if *pr.State == "closed" {
+				status = "closed"
+				color = "red"
+			}
+		}
+	}
+	log.Printf("%s %s #%s %s %s", organization, repo, params["pull_id"], status, color)
 
 	badgeURL, err := url.Parse("https://img.shields.io")
 	if err != nil {
 		panic("boom")
 	}
 
-	badgeURL.Path += fmt.Sprintf("/badge/%s PR #%s-%s-%s.%s", repo, pullRequestID, status, color, badgeType)
+	badgeURL.Path += fmt.Sprintf("/badge/%s PR #%d-%s-%s.%s", repo, pullRequestID, status, color, badgeType)
 
 	log.Println("redirecting to", badgeURL)
 	render.Redirect(badgeURL.String())
@@ -63,7 +82,7 @@ func main() {
 
 	m := martini.Classic()
 	m.Use(render.Renderer())
-	m.Get("/github/:org/:repo/pull/:pull_id.(?P<badge_type>(svg|png|json))", prBadgeHandler)
+	m.Get("/github/:org/:repo/pull/(?P<pull_id>\\d+).(?P<badge_type>(svg|png|json))", prBadgeHandler)
 	m.Get("/github/:org/:repo/pull/:pull_id", prRedirectHandler)
 	m.Run()
 
