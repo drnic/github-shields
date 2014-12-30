@@ -9,8 +9,8 @@ You can now document the live status of GitHub Pull Requests in your documentati
 
 And issues:
 
--	[![golang/go/issues/498](https://github-shields.cfapps.io/github/golang/go/issues/498.svg)](http://localhost:3000/github/golang/go/issues/498)
--	[![go-martini/martini/issues/317](https://github-shields.cfapps.io/github/go-martini/martini/issues/317.svg)](http://localhost:3000/githubgo-martini/martini/issues/317)
+-	[![golang/go/issues/498](https://github-shields.cfapps.io/github/golang/go/issues/498.svg)](https://github-shields.cfapps.io/github/golang/go/issues/498)
+-	[![go-martini/martini/issues/317](https://github-shields.cfapps.io/github/go-martini/martini/issues/317.svg)](https://github-shields.cfapps.io/githubgo-martini/martini/issues/317)
 
 Badges are being rendered by the awesome http://shields.io/ service.
 
