@@ -26,7 +26,7 @@ func prRedirectHandler(render render.Render, r *http.Request, params martini.Par
 	render.Redirect(url)
 }
 
-func prBadgeHandler(render render.Render, r *http.Request, params martini.Params) {
+func prBadgeHandler(w http.ResponseWriter, r *http.Request, params martini.Params) {
 	organization := params["org"]
 	repo := params["repo"]
 	badgeType := params["badge_type"]
@@ -65,7 +65,8 @@ func prBadgeHandler(render render.Render, r *http.Request, params martini.Params
 	badgeURL.Path += fmt.Sprintf("/badge/%s PR #%d-%s-%s.%s", repo, pullRequestID, status, color, badgeType)
 
 	log.Println("redirecting to", badgeURL)
-	render.Redirect(badgeURL.String())
+	w.Header().Set("Cache-Control", "no-cache")
+	http.Redirect(w, r, badgeURL.String(), 302)
 }
 
 func main() {
