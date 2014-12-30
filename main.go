@@ -26,6 +26,15 @@ func prRedirectHandler(render render.Render, r *http.Request, params martini.Par
 	render.Redirect(url)
 }
 
+func issueRedirectHandler(render render.Render, r *http.Request, params martini.Params) {
+	organization := params["org"]
+	repo := params["repo"]
+	pullRequestID := params["pull_id"]
+
+	url := fmt.Sprintf("https://github.com/%s/%s/issues/%s", organization, repo, pullRequestID)
+	render.Redirect(url)
+}
+
 func prBadgeHandler(w http.ResponseWriter, r *http.Request, params martini.Params) {
 	organization := params["org"]
 	repo := params["repo"]
@@ -69,6 +78,46 @@ func prBadgeHandler(w http.ResponseWriter, r *http.Request, params martini.Param
 	http.Redirect(w, r, badgeURL.String(), 302)
 }
 
+func issueBadgeHandler(w http.ResponseWriter, r *http.Request, params martini.Params) {
+	organization := params["org"]
+	repo := params["repo"]
+	badgeType := params["badge_type"]
+	if (badgeType != "png") && (badgeType != "json") {
+		badgeType = "svg"
+	}
+
+	status := "unknown"
+	color := "lightgrey"
+
+	issueID, err := strconv.ParseInt(params["issue_id"], 10, 0)
+	if err == nil {
+		log.Printf("getting github issue %s %s #%d %s", organization, repo, issueID, badgeType)
+		issue, _, err := client.Issues.Get(organization, repo, int(issueID))
+		if err == nil {
+			fmt.Printf("Issue %s %s: state: %s\n", organization, repo, *issue.State)
+			if *issue.State == "open" {
+				status = "open"
+				color = "green"
+			} else if *issue.State == "closed" {
+				status = "closed"
+				color = "red"
+			}
+		}
+	}
+	log.Printf("%s %s #%s %s %s", organization, repo, params["issueID"], status, color)
+
+	badgeURL, err := url.Parse("https://img.shields.io")
+	if err != nil {
+		panic("boom")
+	}
+
+	badgeURL.Path += fmt.Sprintf("/badge/%s #%d-%s-%s.%s", repo, issueID, status, color, badgeType)
+
+	log.Println("redirecting to", badgeURL)
+	w.Header().Set("Cache-Control", "no-cache")
+	http.Redirect(w, r, badgeURL.String(), 302)
+}
+
 func main() {
 	githubAccessToken := os.Getenv("GITHUB_ACCESS_TOKEN")
 	if githubAccessToken == "" {
@@ -85,6 +134,8 @@ func main() {
 	m.Use(render.Renderer())
 	m.Get("/github/:org/:repo/pull/(?P<pull_id>\\d+).(?P<badge_type>(svg|png|json))", prBadgeHandler)
 	m.Get("/github/:org/:repo/pull/:pull_id", prRedirectHandler)
+	m.Get("/github/:org/:repo/issues/(?P<issue_id>\\d+).(?P<badge_type>(svg|png|json))", issueBadgeHandler)
+	m.Get("/github/:org/:repo/issues/:issue_id", issueRedirectHandler)
 	m.Run()
 
 }
