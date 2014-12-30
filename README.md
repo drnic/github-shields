@@ -1,5 +1,11 @@
-Badges for status of GitHub Pull Requests
+GitHub Pull Request status badges/shields
 =========================================
+
+You can now document the live status of GitHub Pull Requests in your documentation/blogs.
+
+-	[![pivotal-cf-experimental/lattice/pull/8](https://github-shields.cfapps.io/github/pivotal-cf-experimental/lattice/pull/8.svg)](https://github-shields.cfapps.io/github/pivotal-cf-experimental/lattice/pull/8)
+-	[![cloudfoundry/cloud_controller_ng/pull/316](https://github-shields.cfapps.io/github/cloudfoundry/cloud_controller_ng/pull/316.svg)](https://github-shields.cfapps.io/github/cloudfoundry/cloud_controller_ng/pull/316)
+-	[![hashicorp/terraform/pull/708](https://github-shields.cfapps.io/github/hashicorp/terraform/pull/708.svg)](https://github-shields.cfapps.io/github/hashicorp/terraform/pull/708)
 
 How it works
 ------------
@@ -12,7 +18,7 @@ Whilst without the suffix, the redirect is the the GitHub PR URL:
 
 https://github-shields.cfapps.io/github/pivotal-cf-experimental/lattice/pull/8 directs to https://github.com/pivotal-cf-experimental/lattice/pull/8
 
-[![pivotal-cf-experimental/lattice/pull/8](https://github-shields.cfapps.io/github/pivotal-cf-experimental/lattice/pull/8.svg)](https://github-shields.cfapps.io/github/pivotal-cf-experimental/lattice/pull/8)
+Compose the two together to get a clickable shield for a PR status: [![pivotal-cf-experimental/lattice/pull/8](https://github-shields.cfapps.io/github/pivotal-cf-experimental/lattice/pull/8.svg)](https://github-shields.cfapps.io/github/pivotal-cf-experimental/lattice/pull/8)
 
 Deploying to Cloud Foundry
 --------------------------
