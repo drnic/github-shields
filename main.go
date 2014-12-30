@@ -45,7 +45,7 @@ func prBadgeHandler(w http.ResponseWriter, r *http.Request, params martini.Param
 			fmt.Printf("PR %s %s: merged? %t state: %s\n", organization, repo, *pr.Merged, *pr.State)
 			if *pr.Merged {
 				status = "merged"
-				color = "blue"
+				color = "6e5494"
 			} else if *pr.State == "open" {
 				status = "open"
 				color = "green"
