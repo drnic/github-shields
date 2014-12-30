@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 
 	"code.google.com/p/goauth2/oauth"
@@ -15,14 +16,37 @@ import (
 
 var client *github.Client
 
-func pullHandler(render render.Render, r *http.Request, params martini.Params) {
+func prRedirectHandler(render render.Render, r *http.Request, params martini.Params) {
 	organization := params["org"]
 	repo := params["repo"]
 	pullRequestID := params["pull_id"]
 
-	log.Printf("getting github PR %s/%s #%s", organization, repo, pullRequestID)
 	url := fmt.Sprintf("https://github.com/%s/%s/pull/%s", organization, repo, pullRequestID)
 	render.Redirect(url)
+}
+
+func prBadgeHandler(render render.Render, r *http.Request, params martini.Params) {
+	organization := params["org"]
+	repo := params["repo"]
+	pullRequestID := params["pull_id"]
+	badgeType := params["badge_type"]
+	log.Printf("getting github PR %s %s #%s %s", organization, repo, pullRequestID, badgeType)
+	if (badgeType != "png") && (badgeType != "json") {
+		badgeType = "svg"
+	}
+
+	status := "open"
+	color := "green"
+
+	badgeURL, err := url.Parse("https://img.shields.io")
+	if err != nil {
+		panic("boom")
+	}
+
+	badgeURL.Path += fmt.Sprintf("/badge/%s PR #%s-%s-%s.%s", repo, pullRequestID, status, color, badgeType)
+
+	log.Println("redirecting to", badgeURL)
+	render.Redirect(badgeURL.String())
 }
 
 func main() {
@@ -39,7 +63,8 @@ func main() {
 
 	m := martini.Classic()
 	m.Use(render.Renderer())
-	m.Get("/github/:org/:repo/pull/:pull_id", pullHandler)
+	m.Get("/github/:org/:repo/pull/:pull_id.(?P<badge_type>(svg|png|json))", prBadgeHandler)
+	m.Get("/github/:org/:repo/pull/:pull_id", prRedirectHandler)
 	m.Run()
 
 }
