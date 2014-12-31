@@ -72,7 +72,9 @@ func prBadgeHandler(w http.ResponseWriter, r *http.Request, params martini.Param
 		panic("boom")
 	}
 
-	badgeURL.Path += fmt.Sprintf("/badge/%s PR #%d-%s-%s.%s", repo, pullRequestID, status, color, badgeType)
+	safeRepo := strings.Replace(repo, "-", "--", -1)
+	safeRepo = strings.Replace(safeRepo, "_", "__", -1)
+	badgeURL.Path += fmt.Sprintf("/badge/%s PR #%d-%s-%s.%s", safeRepo, pullRequestID, status, color, badgeType)
 
 	log.Println("redirecting to", badgeURL)
 	w.Header().Set("Cache-Control", "no-cache")
@@ -113,6 +115,7 @@ func issueBadgeHandler(w http.ResponseWriter, r *http.Request, params martini.Pa
 	}
 
 	safeRepo := strings.Replace(repo, "-", "--", -1)
+	safeRepo = strings.Replace(safeRepo, "_", "__", -1)
 	badgeURL.Path += fmt.Sprintf("/badge/%s #%d-%s-%s.%s", safeRepo, issueID, status, color, badgeType)
 
 	log.Println("redirecting to", badgeURL)
