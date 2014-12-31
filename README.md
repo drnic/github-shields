@@ -12,6 +12,10 @@ And issues:
 -	[![golang/go/issues/498](https://github-shields.cfapps.io/github/golang/go/issues/498.svg)](https://github-shields.cfapps.io/github/golang/go/issues/498)
 -	[![go-martini/martini/issues/317](https://github-shields.cfapps.io/github/go-martini/martini/issues/317.svg)](https://github-shields.cfapps.io/github/go-martini/martini/issues/317)
 
+Heck, here are some issues/PRs for this project itself:
+
+-	[![drnic/github-shields/issues/1](https://github-shields.cfapps.io/github/drnic/github-shields/issues/1.svg)](https://github-shields.cfapps.io/github/drnic/github-shields/issues/1)
+
 Badges are being rendered by the awesome http://shields.io/ service.
 
 How it works

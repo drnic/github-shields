@@ -14,3 +14,7 @@ Issues:
 
 -	[![golang/go/issues/498](http://localhost:3000/github/golang/go/issues/498.svg)](http://localhost:3000/github/golang/go/issues/498)
 -	[![go-martini/martini/issues/317](http://localhost:3000/github/go-martini/martini/issues/317.svg)](http://localhost:3000/githubgo-martini/martini/issues/317)
+
+Hyphen in the name:
+
+-	[![drnic/github-shields/issues/1](http://localhost:3000/github/drnic/github-shields/issues/1.svg?1)](http://localhost:3000/github/drnic/github-shields/issues/1)

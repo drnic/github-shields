@@ -7,6 +7,7 @@ import (
 	"net/url"
 	"os"
 	"strconv"
+	"strings"
 
 	"code.google.com/p/goauth2/oauth"
 
@@ -111,7 +112,8 @@ func issueBadgeHandler(w http.ResponseWriter, r *http.Request, params martini.Pa
 		panic("boom")
 	}
 
-	badgeURL.Path += fmt.Sprintf("/badge/%s #%d-%s-%s.%s", repo, issueID, status, color, badgeType)
+	safeRepo := strings.Replace(repo, "-", "--", -1)
+	badgeURL.Path += fmt.Sprintf("/badge/%s #%d-%s-%s.%s", safeRepo, issueID, status, color, badgeType)
 
 	log.Println("redirecting to", badgeURL)
 	w.Header().Set("Cache-Control", "no-cache")
