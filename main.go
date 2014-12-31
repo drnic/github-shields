@@ -30,9 +30,9 @@ func prRedirectHandler(render render.Render, r *http.Request, params martini.Par
 func issueRedirectHandler(render render.Render, r *http.Request, params martini.Params) {
 	organization := params["org"]
 	repo := params["repo"]
-	pullRequestID := params["pull_id"]
+	issueID := params["issue_id"]
 
-	url := fmt.Sprintf("https://github.com/%s/%s/issues/%s", organization, repo, pullRequestID)
+	url := fmt.Sprintf("https://github.com/%s/%s/issues/%s", organization, repo, issueID)
 	render.Redirect(url)
 }
 
