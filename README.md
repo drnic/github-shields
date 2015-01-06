@@ -3,18 +3,18 @@ GitHub Pull Request/Issue status badges/shields
 
 You can now document the live status of GitHub Pull Requests in your documentation/blogs.
 
--	[![pivotal-cf-experimental/lattice/pull/7](https://github-shields.cfapps.io/github/pivotal-cf-experimental/lattice/pull/7.svg)](https://github-shields.cfapps.io/github/pivotal-cf-experimental/lattice/pull/7)
--	[![cloudfoundry/cloud_controller_ng/pull/316](https://github-shields.cfapps.io/github/cloudfoundry/cloud_controller_ng/pull/316.svg?1)](https://github-shields.cfapps.io/github/cloudfoundry/cloud_controller_ng/pull/316)
--	[![hashicorp/terraform/pull/708](https://github-shields.cfapps.io/github/hashicorp/terraform/pull/708.svg?2)](https://github-shields.cfapps.io/github/hashicorp/terraform/pull/708)
+-	[![pivotal-cf-experimental/lattice/pull/7](https://github-shields.com/github/pivotal-cf-experimental/lattice/pull/7.svg)](https://github-shields.com/github/pivotal-cf-experimental/lattice/pull/7)
+-	[![cloudfoundry/cloud_controller_ng/pull/316](https://github-shields.com/github/cloudfoundry/cloud_controller_ng/pull/316.svg?1)](https://github-shields.com/github/cloudfoundry/cloud_controller_ng/pull/316)
+-	[![hashicorp/terraform/pull/708](https://github-shields.com/github/hashicorp/terraform/pull/708.svg?2)](https://github-shields.com/github/hashicorp/terraform/pull/708)
 
 And issues:
 
--	[![golang/go/issues/498](https://github-shields.cfapps.io/github/golang/go/issues/498.svg)](https://github-shields.cfapps.io/github/golang/go/issues/498)
--	[![go-martini/martini/issues/317](https://github-shields.cfapps.io/github/go-martini/martini/issues/317.svg)](https://github-shields.cfapps.io/github/go-martini/martini/issues/317)
+-	[![golang/go/issues/498](https://github-shields.com/github/golang/go/issues/498.svg)](https://github-shields.com/github/golang/go/issues/498)
+-	[![go-martini/martini/issues/317](https://github-shields.com/github/go-martini/martini/issues/317.svg)](https://github-shields.com/github/go-martini/martini/issues/317)
 
 Heck, here are some issues/PRs for this project itself:
 
--	[![drnic/github-shields/issues/1](https://github-shields.cfapps.io/github/drnic/github-shields/issues/1.svg)](https://github-shields.cfapps.io/github/drnic/github-shields/issues/1)
+-	[![drnic/github-shields/issues/1](https://github-shields.com/github/drnic/github-shields/issues/1.svg)](https://github-shields.com/github/drnic/github-shields/issues/1)
 
 Badges are being rendered by the awesome http://shields.io/ service.
 
@@ -23,13 +23,13 @@ How it works
 
 To get a badge/shield, include `.svg` or `.png` suffix:
 
-https://github-shields.cfapps.io/github/pivotal-cf-experimental/lattice/pull/8.svg redirects to https://img.shields.io/badge/lattice%20PR%20%238-open-green.svg
+https://github-shields.com/github/pivotal-cf-experimental/lattice/pull/8.svg redirects to https://img.shields.io/badge/lattice%20PR%20%238-open-green.svg
 
 Whilst without the suffix, the redirect is the the GitHub PR URL:
 
-https://github-shields.cfapps.io/github/pivotal-cf-experimental/lattice/pull/8 directs to https://github.com/pivotal-cf-experimental/lattice/pull/8
+https://github-shields.com/github/pivotal-cf-experimental/lattice/pull/8 directs to https://github.com/pivotal-cf-experimental/lattice/pull/8
 
-Compose the two together to get a clickable shield for a PR status: [![pivotal-cf-experimental/lattice/pull/8](https://github-shields.cfapps.io/github/pivotal-cf-experimental/lattice/pull/8.svg)](https://github-shields.cfapps.io/github/pivotal-cf-experimental/lattice/pull/8)
+Compose the two together to get a clickable shield for a PR status: [![pivotal-cf-experimental/lattice/pull/8](https://github-shields.com/github/pivotal-cf-experimental/lattice/pull/8.svg)](https://github-shields.com/github/pivotal-cf-experimental/lattice/pull/8)
 
 Deploying to Cloud Foundry
 --------------------------
