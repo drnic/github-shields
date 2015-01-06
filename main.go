@@ -137,10 +137,15 @@ func main() {
 
 	m := martini.Classic()
 	m.Use(render.Renderer())
+
 	m.Get("/github/:org/:repo/pull/(?P<pull_id>\\d+).(?P<badge_type>(svg|png|json))", prBadgeHandler)
 	m.Get("/github/:org/:repo/pull/:pull_id", prRedirectHandler)
 	m.Get("/github/:org/:repo/issues/(?P<issue_id>\\d+).(?P<badge_type>(svg|png|json))", issueBadgeHandler)
 	m.Get("/github/:org/:repo/issues/:issue_id", issueRedirectHandler)
-	m.Run()
 
+	// Redirect to blog post for any other route (e.g. root route) until some human website implemented
+	m.NotFound(func(render render.Render) {
+		render.Redirect("https://blog.starkandwayne.com/2014/12/30/live-github-pr-status-in-your-blogs-docs/")
+	})
+	m.Run()
 }
