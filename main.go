@@ -44,10 +44,11 @@ func prBadgeHandler(w http.ResponseWriter, r *http.Request, params martini.Param
 		badgeType = "svg"
 	}
 
+	style := r.URL.Query().Get("style")
 	status := "unknown"
 	color := "lightgrey"
 
-	pullRequestID, err := strconv.ParseInt(params["pull_id"], 10, 0)
+	pullRequestID, err := strconv.Atoi(params["pull_id"])
 	if err == nil {
 		log.Printf("getting github PR %s %s #%d %s", organization, repo, pullRequestID, badgeType)
 		pr, _, err := client.PullRequests.Get(organization, repo, int(pullRequestID))
@@ -67,14 +68,7 @@ func prBadgeHandler(w http.ResponseWriter, r *http.Request, params martini.Param
 	}
 	log.Printf("%s %s #%s %s %s", organization, repo, params["pull_id"], status, color)
 
-	badgeURL, err := url.Parse("https://img.shields.io")
-	if err != nil {
-		panic("boom")
-	}
-
-	safeRepo := strings.Replace(repo, "-", "--", -1)
-	safeRepo = strings.Replace(safeRepo, "_", "__", -1)
-	badgeURL.Path += fmt.Sprintf("/badge/%s PR #%d-%s-%s.%s", safeRepo, pullRequestID, status, color, badgeType)
+	badgeURL := buildBadgeURL(pullRequestID, repo, status, color, badgeType, style)
 
 	log.Println("redirecting to", badgeURL)
 	w.Header().Set("Cache-Control", "no-cache")
@@ -89,10 +83,11 @@ func issueBadgeHandler(w http.ResponseWriter, r *http.Request, params martini.Pa
 		badgeType = "svg"
 	}
 
+	style := r.URL.Query().Get("style")
 	status := "unknown"
 	color := "lightgrey"
 
-	issueID, err := strconv.ParseInt(params["issue_id"], 10, 0)
+	issueID, err := strconv.Atoi(params["issue_id"])
 	if err == nil {
 		log.Printf("getting github issue %s %s #%d %s", organization, repo, issueID, badgeType)
 		issue, _, err := client.Issues.Get(organization, repo, int(issueID))
@@ -109,18 +104,30 @@ func issueBadgeHandler(w http.ResponseWriter, r *http.Request, params martini.Pa
 	}
 	log.Printf("%s %s #%s %s %s", organization, repo, params["issueID"], status, color)
 
-	badgeURL, err := url.Parse("https://img.shields.io")
-	if err != nil {
-		panic("boom")
-	}
-
-	safeRepo := strings.Replace(repo, "-", "--", -1)
-	safeRepo = strings.Replace(safeRepo, "_", "__", -1)
-	badgeURL.Path += fmt.Sprintf("/badge/%s #%d-%s-%s.%s", safeRepo, issueID, status, color, badgeType)
+	badgeURL := buildBadgeURL(issueID, repo, status, color, badgeType, style)
 
 	log.Println("redirecting to", badgeURL)
 	w.Header().Set("Cache-Control", "no-cache")
 	http.Redirect(w, r, badgeURL.String(), 302)
+}
+
+func buildBadgeURL(id int, repo, status, color, format, style string) *url.URL {
+	url, err := url.Parse("https://img.shields.io")
+	if err != nil {
+		panic("boom")
+	}
+
+	repo = strings.Replace(repo, "-", "--", -1)
+	repo = strings.Replace(repo, "_", "__", -1)
+
+	url.Path += fmt.Sprintf("/badge/%s #%d-%s-%s.%s", repo, id, status, color, format)
+	if style != "" {
+		query := url.Query()
+		query.Add("style", style)
+		url.RawQuery = query.Encode()
+	}
+
+	return url
 }
 
 func main() {
